@@ -21,5 +21,5 @@ anything without your explicit consent, but it can still freely rename, move, an
   a model that has a smaller parameter size or lower quantization (like q4_K_M rather than q8_0)
 - The model is completely local, so if you are worried about sensitive information being passed into the LLM, please
   note it is not sent anywhere.
-- However, if you choose to use a cloud model, there is a variable in `main.py` called
+- However, if you choose to use a cloud model and prefer more privacy, there is a variable in `main.py` called
   `request_permission_to_read_files` and when set to `true` it will always ask before reading files.

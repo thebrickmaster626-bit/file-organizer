@@ -1,4 +1,3 @@
-import hashlib
 from pathlib import Path
 import ollama
 
@@ -6,8 +5,9 @@ import ollama
 # Side project created on May 27, 2026
 
 path = "~/Desktop/mesyy"
+prompt = Path("PROMPT.md")
 
-# p = Path(input("Enter the folder to be organized: ")).expanduser()
+# p = Path(input("Enter the folder to be organized: ")).expanduser().resolve()
 p = Path(path).expanduser().resolve()
 
 if (not p.is_dir()) or (not p.exists()):
@@ -16,12 +16,21 @@ if (not p.is_dir()) or (not p.exists()):
 # List all files and directories
 all_files = list(p.iterdir())
 
-for f in range(len(all_files)):
-    all_files[f] = all_files[f].resolve()
-    if all_files[f].is_dir():
-        all_files[f] = all_files[f].name + " (folder)"
+for i, file in enumerate(all_files):
+    all_files[i] = all_files[i].resolve()
+    if all_files[i].is_dir():
+        all_files[i] = {"name": f"{all_files[i].name} (folder)", "path": str(all_files[i].expanduser().resolve())}
     else:
-        all_files[f] = all_files[f].name
+        all_files[i] = {"name": all_files[i].name, "path": str(all_files[i].expanduser().resolve())}
 
-all_files.sort()
+no_hidden_files = []
+
+for i in all_files:
+    if not i["name"].startswith("."):
+        no_hidden_files.append(i)
+
+all_files = no_hidden_files
+
 print(all_files)
+
+history = [{"role": "system", "content": prompt.read_text()}]
